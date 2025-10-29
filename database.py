@@ -1,5 +1,4 @@
 import psycopg
-import psycopg2
 from psycopg import Connection, Cursor
 from psycopg.rows import dict_row, class_row
 from contextlib import contextmanager
