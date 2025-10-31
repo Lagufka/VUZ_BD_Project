@@ -1,6 +1,8 @@
 import os
 from dataclasses import dataclass
+from typing import Callable
 from dotenv import load_dotenv
+from psycopg.rows import dict_row
 
 load_dotenv("dbenv.env")
 
@@ -13,6 +15,7 @@ class DatabaseConfig:
     password: str = os.getenv("DB_PASSWORD", "")
     pool_min: int = 1
     pool_max: int = 10
+    row_factory: Callable = dict_row
 
     @property
     def dsn(self) -> str:
