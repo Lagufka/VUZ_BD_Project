@@ -1,4 +1,4 @@
-from config import DatabaseConfig, db_config
+from src.classes.DatabaseConfig import DatabaseConfig, db_config
 
 import psycopg
 from psycopg import sql
