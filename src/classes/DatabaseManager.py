@@ -32,7 +32,7 @@ class DatabaseManager:
             with conn.cursor(row_factory=self.config.row_factory) as cursor:
                 yield cursor
 
-    def execute_query(self, query: LiteralString, params: Optional[tuple] = None) -> list:
+    def execute_query(self, query: LiteralString, params: Optional[list] = None) -> list:
         """Execute a SQL query with optional parameters and return all results.
         SELECT queries and other operations that return data from the database.
 
@@ -43,7 +43,7 @@ class DatabaseManager:
             cursor.execute(query, params)
             return cursor.fetchall()
 
-    def execute_command(self, command: LiteralString, params: Optional[tuple] = None) -> int:
+    def execute_command(self, command: LiteralString, params: Optional[list] = None) -> int:
         """Execute a SQL command with optional parameters and return the number of affected rows.
         INSERT, UPDATE, DELETE, and other DML commands.
         
