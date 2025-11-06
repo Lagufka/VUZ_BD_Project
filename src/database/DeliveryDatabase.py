@@ -15,7 +15,7 @@ class DeliveryDatabase:
         DB_PASSWORD
     """
 
-    def __init__(self):
-        self.query_repository = QueryRepository
-        self.database_manager = DatabaseManager(DatabaseConfig())
+    def __init__(self, query_repository=None, database_manager=None):
+        self.query_repository = query_repository or QueryRepository
+        self.database_manager = database_manager or DatabaseManager(DatabaseConfig())
 
