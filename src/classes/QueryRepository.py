@@ -7,9 +7,6 @@ class QueryRepository:
     Безопасный репозиторий для генерации SQL-запросов с параметризацией
     """
 
-    
-
-    
     @staticmethod
     def select(
         table: str,
@@ -121,7 +118,116 @@ class QueryRepository:
             query += f" RETURNING {returning_str}"
         
         return query, params  # type: ignore
-    
+
+    @staticmethod
+    def update(
+        table: str,
+        data: Dict[str, Any],
+        where: Optional[Dict[str, Any]] = None,
+        returning: Optional[Union[str, List[str]]] = None
+    ) -> tuple[LiteralString, List[Any]]:
+        """
+        Генерация UPDATE запроса с параметрами
+        
+        Args:
+            table: Имя таблицы
+            data: Словарь с данными для обновления {column: value}
+            where: Условия для фильтрации
+            returning: Колонки для возврата после обновления
+            
+        Returns:
+            tuple: (query, parameters) - запрос и список параметров
+        """
+        if not data:
+            raise ValueError("Data cannot be empty for UPDATE")
+        
+        params: List[Any] = []
+        table_safe = QueryRepository._validate_identifier(table)
+        
+        # Генерация SET части с параметрами
+        set_clauses = []
+        for key, value in data.items():
+            key_safe = QueryRepository._validate_identifier(key)
+            param_index = len(params) + 1
+            set_clauses.append(f'"{key_safe}" = ${param_index}')
+            params.append(value)
+        
+        set_str = ", ".join(set_clauses)
+        query = f'UPDATE "{table_safe}" SET {set_str}'
+        
+        # Добавление условий WHERE с параметрами
+        if where:
+            where_conditions = []
+            for key, value in where.items():
+                key_safe = QueryRepository._validate_identifier(key)
+                if value is None:
+                    where_conditions.append(f'"{key_safe}" IS NULL')
+                else:
+                    param_index = len(params) + 1
+                    where_conditions.append(f'"{key_safe}" = ${param_index}')
+                    params.append(value)
+            
+            query += f" WHERE {' AND '.join(where_conditions)}"
+        
+        # Добавление RETURNING
+        if returning:
+            if isinstance(returning, list):
+                returning_safe = [QueryRepository._validate_identifier(col) for col in returning]
+                returning_str = ", ".join(f'"{col}"' for col in returning_safe)
+            else:
+                returning_safe = QueryRepository._validate_identifier(returning)
+                returning_str = f'"{returning_safe}"'
+            query += f" RETURNING {returning_str}"
+        
+        return query, params  # type: ignore
+
+    @staticmethod
+    def delete(
+        table: str,
+        where: Optional[Dict[str, Any]] = None,
+        returning: Optional[Union[str, List[str]]] = None
+    ) -> tuple[LiteralString, List[Any]]:
+        """
+        Генерация DELETE запроса с параметрами
+        
+        Args:
+            table: Имя таблицы
+            where: Условия для фильтрации (если None - удаляет все записи)
+            returning: Колонки для возврата после удаления
+            
+        Returns:
+            tuple: (query, parameters) - запрос и список параметров
+        """
+        params: List[Any] = []
+        table_safe = QueryRepository._validate_identifier(table)
+        
+        query = f'DELETE FROM "{table_safe}"'
+        
+        # Добавление условий WHERE с параметрами
+        if where:
+            where_conditions = []
+            for key, value in where.items():
+                key_safe = QueryRepository._validate_identifier(key)
+                if value is None:
+                    where_conditions.append(f'"{key_safe}" IS NULL')
+                else:
+                    param_index = len(params) + 1
+                    where_conditions.append(f'"{key_safe}" = ${param_index}')
+                    params.append(value)
+            
+            query += f" WHERE {' AND '.join(where_conditions)}"
+        
+        # Добавление RETURNING
+        if returning:
+            if isinstance(returning, list):
+                returning_safe = [QueryRepository._validate_identifier(col) for col in returning]
+                returning_str = ", ".join(f'"{col}"' for col in returning_safe)
+            else:
+                returning_safe = QueryRepository._validate_identifier(returning)
+                returning_str = f'"{returning_safe}"'
+            query += f" RETURNING {returning_str}"
+        
+        return query, params  # type: ignore
     
     @staticmethod
     def _validate_identifier(identifier: str) -> str:
@@ -152,5 +258,3 @@ class QueryRepository:
             return f"{column} {direction}"
         
         return column
-
-    
