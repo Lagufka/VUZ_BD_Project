@@ -1,6 +1,6 @@
-from DatabaseManager import DatabaseManager
-from QueryRepository import QueryRepository
-from DatabaseConfig import DatabaseConfig
+from database._DatabaseManager import DatabaseManager
+from database._QueryRepository import QueryRepository
+from database._DatabaseConfig import DatabaseConfig
 
 class DeliveryDatabase:
     """
