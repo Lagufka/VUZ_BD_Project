@@ -13,10 +13,33 @@ class FakeData:
             "type"
             "phone_number"
         """
+        cities = [
+            "Москва",
+            "Санкт-Петербург",
+            "Новосибирск",
+            "Екатеринбург",
+            "Казань",
+            "Нижний Новгород",
+            "Красноярск",
+            "Челябинск",
+            "Самара",
+            "Уфа",
+            "Ростов-на-Дону",
+            "Краснодар",
+            "Омск",
+            "Воронеж",
+            "Пермь",
+            "Волгоград",
+            "Тюмень",
+            "Иркутск",
+            "Ульяновск",
+            "Владивосток",
+        ]
+
         points = []
         for _ in range(count):
             point = {
-                "addres": f"{self.faker.city()}, {self.faker.street_address()}",
+                "addres": f"г. {random.choice(cities)}, {self.faker.street_address()}",
                 "type": random.choice(["ПВЗ", "Склад"]),
                 "phone_number": (
                     self.faker.phone_number() if random.random() < 0.3 else None
