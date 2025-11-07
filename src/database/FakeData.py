@@ -35,14 +35,46 @@ class FakeData:
             "Ульяновск",
             "Владивосток",
         ]
+        streets = [
+            "ул. Ленина",
+            "ул. Центральная",
+            "ул. Молодежная",
+            "ул. Школьная",
+            "ул. Садовая",
+            "ул. Советская",
+            "ул. Новая",
+            "ул. Набережная",
+            "ул. Лесная",
+            "ул. Октябрьская",
+            "ул. Зеленая",
+            "ул. Мира",
+            "ул. Комсомольская",
+            "ул. Победы",
+            "ул. Гагарина",
+            "ул. Московская",
+            "ул. Речная",
+            "ул. Трудовая",
+            "ул. Строителей",
+            "ул. Первомайская",
+            "ул. Юбилейная",
+            "ул. Северная",
+            "ул. Рабочая",
+            "ул. Заречная",
+            "ул. Колхозная",
+            "ул. Пионерская",
+            "ул. Солнечная",
+            "ул. Полевая",
+            "ул. Дружбы",
+            "ул. Свободы"
+        ]
 
         points = []
         for _ in range(count):
             point = {
-                "addres": f"г. {random.choice(cities)}, {self.faker.street_address()}",
+                "addres": f"г. {random.choice(cities)}, {random.choice(streets)}, д. {random.randint(1, 200)}",
                 "type": random.choice(["ПВЗ", "Склад"]),
                 "phone_number": (
-                    self.faker.phone_number() if random.random() < 0.3 else None
+                    self.faker.phone_number() if random.random() < 0.9 else None
                 ),
             }
             points.append(point)
