@@ -1,3 +1,4 @@
+from email import contentmanager
 from database._DatabaseConfig import DatabaseConfig, db_config
 
 import psycopg
@@ -16,6 +17,9 @@ class DatabaseManager:
             max_size=self.config.pool_max,
         )
 
+    def close(self):
+        self.connection_pool.close()
+
     @contextmanager
     def _get_connection(self):
         with self.connection_pool.connection() as conn:
@@ -32,21 +36,25 @@ class DatabaseManager:
             with conn.cursor(row_factory=self.config.row_factory) as cursor:
                 yield cursor
 
-    def execute_query(self, query: LiteralString, params: Optional[list] = None) -> list:
+    def execute_query(
+        self, query: LiteralString, params: Optional[list] = None
+    ) -> list:
         """Execute a SQL query with optional parameters and return all results.
         SELECT queries and other operations that return data from the database.
 
-        Returns: 
+        Returns:
             list: A list of tuples containing all rows returned by the query. Each tuple represents one row of results.
         """
         with self._get_cursor() as cursor:
             cursor.execute(query, params)
             return cursor.fetchall()
 
-    def execute_command(self, command: LiteralString, params: Optional[list] = None) -> int:
+    def execute_command(
+        self, command: LiteralString, params: Optional[list] = None
+    ) -> int:
         """Execute a SQL command with optional parameters and return the number of affected rows.
         INSERT, UPDATE, DELETE, and other DML commands.
-        
+
         Returns:
             int: number of touched rows
         """
