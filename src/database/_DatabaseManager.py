@@ -3,7 +3,7 @@ from database._DatabaseConfig import DatabaseConfig, db_config
 
 import psycopg
 from psycopg import sql
-from typing import LiteralString, Optional
+from typing import Any, LiteralString, Optional
 from psycopg_pool import ConnectionPool
 from contextlib import contextmanager
 
@@ -38,7 +38,7 @@ class DatabaseManager:
 
     def execute_query(
         self, query: LiteralString, params: Optional[list] = None
-    ) -> list:
+    ) -> list[dict[str, Any]]:
         """Execute a SQL query with optional parameters and return all results.
         SELECT queries and other operations that return data from the database.
 
