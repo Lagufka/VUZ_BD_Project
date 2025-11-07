@@ -1,4 +1,3 @@
-from ctypes import Union
 from faker import Faker
 import random
 
@@ -7,12 +6,24 @@ class FakeData:
     def __init__(self, loacale="ru_RU") -> None:
         self.faker = Faker(loacale)
 
-    def generateFakeAddreses(self, count: int) -> list[str]:
-        addresses = []
+    def generateFakePoints(self, count) -> list[dict]:
+        """
+        Returns:
+            "addres"
+            "type"
+            "phone_number"
+        """
+        points = []
         for _ in range(count):
-            full_address = f"г. {self.faker.city()}, {self.faker.street_address()}"
-            addresses.append(full_address)
-        return addresses
+            point = {
+                "addres": f"г. {self.faker.city()}, {self.faker.street_address()}",
+                "type": random.choice(["ПВЗ", "Склад"]),
+                "phone_number": (
+                    self.faker.phone_number() if random.random() < 0.3 else ""
+                ),
+            }
+            points.append(point)
+        return points
 
     def generateFakePeople(self, count: int) -> list[dict[str, str]]:
         """
