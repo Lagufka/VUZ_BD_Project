@@ -16,7 +16,7 @@ class FakeData:
         points = []
         for _ in range(count):
             point = {
-                "addres": f"г. {self.faker.city()}, {self.faker.street_address()}",
+                "addres": f"{self.faker.city()}, {self.faker.street_address()}",
                 "type": random.choice(["ПВЗ", "Склад"]),
                 "phone_number": (
                     self.faker.phone_number() if random.random() < 0.3 else None
