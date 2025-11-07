@@ -19,7 +19,7 @@ class FakeData:
                 "addres": f"г. {self.faker.city()}, {self.faker.street_address()}",
                 "type": random.choice(["ПВЗ", "Склад"]),
                 "phone_number": (
-                    self.faker.phone_number() if random.random() < 0.3 else ""
+                    self.faker.phone_number() if random.random() < 0.3 else None
                 ),
             }
             points.append(point)
@@ -44,7 +44,7 @@ class FakeData:
                 "first_name": full_name[1],
                 "patronymic": full_name[2],
                 "phone_number": self.faker.phone_number(),
-                "email": self.faker.email() if random.random() < 0.3 else "",
+                "email": self.faker.email() if random.random() < 0.3 else None,
             }
             people.append(person)
         return people
