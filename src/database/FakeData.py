@@ -43,7 +43,7 @@ class FakeData:
                 "second_name": full_name[0],
                 "first_name": full_name[1],
                 "patronymic": full_name[2],
-                "phone_number": self.faker.phone_number,
+                "phone_number": self.faker.phone_number(),
                 "email": self.faker.email() if random.random() < 0.3 else "",
             }
             people.append(person)
