@@ -1,11 +1,38 @@
 from typing import LiteralString, Optional, List, Any, Dict, Union
 import re
+from inspect import ismethod, isfunction
 
 
 class QueryRepository:
     """
     Безопасный репозиторий для генерации SQL-запросов с параметризацией
     """
+
+    @staticmethod
+    def _validate_value(value: Any) -> Any:
+        """
+        Валидация значений параметров
+        """
+        if ismethod(value) or isfunction(value):
+            raise ValueError(f"Cannot use method or function as parameter value: {value}")
+        return value
+
+    @staticmethod
+    def _process_where_conditions(where: Dict[str, Any], params: List[Any]) -> List[str]:
+        """
+        Обработка условий WHERE с валидацией значений
+        """
+        where_conditions = []
+        for key, value in where.items():
+            key_safe = QueryRepository._validate_identifier(key)
+            if value is None:
+                where_conditions.append(f'"{key_safe}" IS NULL')
+            else:
+                # Валидируем значение перед добавлением в параметры
+                validated_value = QueryRepository._validate_value(value)
+                where_conditions.append(f'"{key_safe}" = %s')
+                params.append(validated_value)
+        return where_conditions
 
     @staticmethod
     def select(
@@ -19,9 +46,6 @@ class QueryRepository:
     ) -> tuple[LiteralString, List[Any]]:
         """
         Генерация SELECT запроса с параметрами
-        
-        Returns:
-            tuple: (query, parameters) - запрос и список параметров
         """
         params: List[Any] = []
         
@@ -31,10 +55,10 @@ class QueryRepository:
         # Обработка колонок
         if isinstance(columns, list):
             columns_safe = [QueryRepository._validate_identifier(col) for col in columns]
-            columns_str = ", ".join(columns_safe)
+            columns_str = ", ".join(f'"{col}"' for col in columns_safe)
         else:
             if columns != "*":
-                columns_str = QueryRepository._validate_identifier(columns)
+                columns_str = f'"{QueryRepository._validate_identifier(columns)}"'
             else:
                 columns_str = columns
         
@@ -44,19 +68,10 @@ class QueryRepository:
         
         # Добавление условий WHERE с параметрами
         if where:
-            where_conditions = []
-            for key, value in where.items():
-                key_safe = QueryRepository._validate_identifier(key)
-                if value is None:
-                    where_conditions.append(f'"{key_safe}" IS NULL')
-                else:
-                    param_index = len(params) + 1
-                    where_conditions.append(f'"{key_safe}" = ${param_index}')
-                    params.append(value)
-            
+            where_conditions = QueryRepository._process_where_conditions(where, params)
             query += f" WHERE {' AND '.join(where_conditions)}"
         
-        # Добавление сортировки (только безопасные идентификаторы)
+        # Добавление сортировки
         if order_by:
             if isinstance(order_by, list):
                 order_by_safe = [QueryRepository._validate_order_clause(clause) for clause in order_by]
@@ -90,20 +105,20 @@ class QueryRepository:
         if not data:
             raise ValueError("Data cannot be empty for INSERT")
         
-        params: List[Any] = []
+        # Валидируем все значения перед созданием параметров
+        validated_data = {}
+        for key, value in data.items():
+            validated_data[key] = QueryRepository._validate_value(value)
+        
+        params = list(validated_data.values())
         table_safe = QueryRepository._validate_identifier(table)
         
-        columns_safe = [QueryRepository._validate_identifier(key) for key in data.keys()]
+        columns_safe = [QueryRepository._validate_identifier(key) for key in validated_data.keys()]
         columns_str = ", ".join(f'"{col}"' for col in columns_safe)
         
-        # Параметризованные значения
-        value_placeholders = []
-        for value in data.values():
-            param_index = len(params) + 1
-            value_placeholders.append(f"${param_index}")
-            params.append(value)
-        
-        values_str = ", ".join(value_placeholders)
+        # Используем %s плейсхолдеры
+        placeholders = ["%s"] * len(validated_data)
+        values_str = ", ".join(placeholders)
         
         query = f'INSERT INTO "{table_safe}" ({columns_str}) VALUES ({values_str})'
         
@@ -128,15 +143,6 @@ class QueryRepository:
     ) -> tuple[LiteralString, List[Any]]:
         """
         Генерация UPDATE запроса с параметрами
-        
-        Args:
-            table: Имя таблицы
-            data: Словарь с данными для обновления {column: value}
-            where: Условия для фильтрации
-            returning: Колонки для возврата после обновления
-            
-        Returns:
-            tuple: (query, parameters) - запрос и список параметров
         """
         if not data:
             raise ValueError("Data cannot be empty for UPDATE")
@@ -144,29 +150,20 @@ class QueryRepository:
         params: List[Any] = []
         table_safe = QueryRepository._validate_identifier(table)
         
-        # Генерация SET части с параметрами
+        # Генерация SET части с валидацией значений
         set_clauses = []
         for key, value in data.items():
             key_safe = QueryRepository._validate_identifier(key)
-            param_index = len(params) + 1
-            set_clauses.append(f'"{key_safe}" = ${param_index}')
-            params.append(value)
+            validated_value = QueryRepository._validate_value(value)
+            set_clauses.append(f'"{key_safe}" = %s')
+            params.append(validated_value)
         
         set_str = ", ".join(set_clauses)
         query = f'UPDATE "{table_safe}" SET {set_str}'
         
         # Добавление условий WHERE с параметрами
         if where:
-            where_conditions = []
-            for key, value in where.items():
-                key_safe = QueryRepository._validate_identifier(key)
-                if value is None:
-                    where_conditions.append(f'"{key_safe}" IS NULL')
-                else:
-                    param_index = len(params) + 1
-                    where_conditions.append(f'"{key_safe}" = ${param_index}')
-                    params.append(value)
-            
+            where_conditions = QueryRepository._process_where_conditions(where, params)
             query += f" WHERE {' AND '.join(where_conditions)}"
         
         # Добавление RETURNING
@@ -189,14 +186,6 @@ class QueryRepository:
     ) -> tuple[LiteralString, List[Any]]:
         """
         Генерация DELETE запроса с параметрами
-        
-        Args:
-            table: Имя таблицы
-            where: Условия для фильтрации (если None - удаляет все записи)
-            returning: Колонки для возврата после удаления
-            
-        Returns:
-            tuple: (query, parameters) - запрос и список параметров
         """
         params: List[Any] = []
         table_safe = QueryRepository._validate_identifier(table)
@@ -205,16 +194,7 @@ class QueryRepository:
         
         # Добавление условий WHERE с параметрами
         if where:
-            where_conditions = []
-            for key, value in where.items():
-                key_safe = QueryRepository._validate_identifier(key)
-                if value is None:
-                    where_conditions.append(f'"{key_safe}" IS NULL')
-                else:
-                    param_index = len(params) + 1
-                    where_conditions.append(f'"{key_safe}" = ${param_index}')
-                    params.append(value)
-            
+            where_conditions = QueryRepository._process_where_conditions(where, params)
             query += f" WHERE {' AND '.join(where_conditions)}"
         
         # Добавление RETURNING
@@ -234,7 +214,6 @@ class QueryRepository:
         """
         Строгая валидация идентификаторов
         """
-        # Разрешаем только буквы, цифры и подчеркивания
         if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', identifier):
             raise ValueError(f"Potential SQL injection detected in identifier: {identifier}")
         return identifier
@@ -244,7 +223,6 @@ class QueryRepository:
         """
         Валидация ORDER BY выражений
         """
-        # Разрешаем только безопасные идентификаторы и направления сортировки
         parts = clause.split()
         if len(parts) > 2:
             raise ValueError(f"Invalid ORDER BY clause: {clause}")
@@ -255,6 +233,6 @@ class QueryRepository:
             direction = parts[1].upper()
             if direction not in ('ASC', 'DESC'):
                 raise ValueError(f"Invalid sort direction: {direction}")
-            return f"{column} {direction}"
+            return f'"{column}" {direction}'
         
-        return column
+        return f'"{column}"'
