@@ -1,5 +1,7 @@
+from typing import Any
 from faker import Faker
 import random
+from datetime import datetime, timedelta
 
 
 class FakeData:
@@ -65,7 +67,7 @@ class FakeData:
             "ул. Солнечная",
             "ул. Полевая",
             "ул. Дружбы",
-            "ул. Свободы"
+            "ул. Свободы",
         ]
 
         points = []
@@ -367,3 +369,187 @@ class FakeData:
             products.append(product)
 
         return products
+
+    def generateFakeParcels(
+        self, buyer_ids: list[int], product_ids: list[int], destination_ids: list[int]
+    ) -> list[dict[str, Any]]:
+        statuses = ["На складе", "В пути", "Готов к выдаче", "Получено", "В обработке"]
+
+        prices = [0, 0, 150, 200, 350, 50, 0, 0, 0, 0]
+        parcels = []
+
+        for buyer_id in buyer_ids:
+            # Для каждого покупателя создаем несколько доставок
+            for _ in range(3):
+                # Случайный продукт
+                product_id = random.choice(product_ids)
+
+                # Случайный пункт назначения
+                destination_id = random.choice(destination_ids)
+
+                # Определяем статус доставки
+                # У некоторых покупателей должны быть незавершенные доставки
+                if random.random() < 0.3:  # 30% доставок незавершенные
+                    status = random.choice(statuses[:-1])  # исключаем "Получено"
+                else:
+                    status = "Получено"
+
+                # Генерируем даты в зависимости от статуса
+                created_date = datetime.now() - timedelta(days=random.randint(1, 30))
+
+                if status == "Получено":
+                    # Если доставка завершена, дата получения после создания
+                    received_date = created_date + timedelta(days=random.randint(1, 10))
+                else:
+                    # Для незавершенных доставок дата получения None
+                    received_date = None
+
+                delivery_data = {
+                    "buyer_id": buyer_id,
+                    "product_id": product_id,
+                    "destination_point_id": destination_id,
+                    "status": status,
+                    "creation_date": created_date,
+                    "parcel_price": random.choice(prices),
+                }
+
+                parcels.append(delivery_data)
+        return parcels
+
+    def generateFakeTransfers(
+            self,
+            points: list[dict[str, Any]],
+            parcels: list[dict[str, Any]],
+        ) -> list[dict[str, Any]]:
+            
+            transfers = []
+
+            # Разделяем точки на склады и ПВЗ
+            warehouses = [
+                point
+                for point in points
+                if point.get("type") == "Склад"
+            ]
+            pvz_points = [
+                point for point in points if point.get("type") == "ПВЗ"
+            ]
+
+            if not warehouses or not pvz_points:
+                print("Ошибка: отсутствуют необходимые типы точек (склады или ПВЗ)")
+                return transfers
+
+            for parcel in parcels:
+                parcel_id = parcel.get("id")
+                status = parcel.get("status")
+                destination_id = parcel.get("destination_id")  # конечный ПВЗ
+
+                if not parcel_id or not status:
+                    continue
+
+                # Выбираем случайные точки маршрута
+                warehouse1 = random.choice(warehouses)
+                warehouse2 = random.choice([w for w in warehouses if w["id"] != warehouse1["id"]])
+                final_pvz = next(
+                    (p for p in pvz_points if p["id"] == destination_id),
+                    random.choice(pvz_points),
+                )
+
+                # Базовые даты для временной шкалы
+                base_date = parcel.get("created_date", datetime.now())
+                
+                # Всегда начинаем с создания и отправки на первый склад
+                transfer1 = {
+                    "parcel_id": parcel_id,
+                    "shipping_point_id": None,
+                    "destination_point_id": warehouse1["id"],
+                    "assigned_status": "В обработке",
+                    "created_date": base_date - timedelta(days=5),
+                }
+                transfers.append(transfer1)
+
+                # Прибытие на первый склад
+                transfer2 = {
+                    "parcel_id": parcel_id,
+                    "shipping_point_id": warehouse1["id"],
+                    "destination_point_id": warehouse1["id"],
+                    "assigned_status": "На складе",
+                    "created_date": base_date - timedelta(days=4, hours=12),
+                }
+                transfers.append(transfer2)
+
+                # Отправка со склада 1 на склад 2
+                transfer3 = {
+                    "parcel_id": parcel_id,
+                    "shipping_point_id": warehouse1["id"],
+                    "destination_point_id": warehouse2["id"],
+                    "assigned_status": "В пути",
+                    "created_date": base_date - timedelta(days=4),
+                }
+                transfers.append(transfer3)
+
+                # Прибытие на второй склад
+                transfer4 = {
+                    "parcel_id": parcel_id,
+                    "shipping_point_id": warehouse2["id"],
+                    "destination_point_id": warehouse2["id"],
+                    "assigned_status": "На складе",
+                    "created_date": base_date - timedelta(days=3, hours=12),
+                }
+                transfers.append(transfer4)
+
+                # Отправка со склада 2 на ПВЗ
+                transfer5 = {
+                    "parcel_id": parcel_id,
+                    "shipping_point_id": warehouse2["id"],
+                    "destination_point_id": final_pvz["id"],
+                    "assigned_status": "В пути",
+                    "created_date": base_date - timedelta(days=3),
+                }
+                transfers.append(transfer5)
+
+                # Прибытие в ПВЗ
+                transfer6 = {
+                    "parcel_id": parcel_id,
+                    "shipping_point_id": final_pvz["id"],
+                    "destination_point_id": final_pvz["id"],
+                    "assigned_status": "Готов к выдаче",
+                    "created_date": base_date - timedelta(days=2, hours=12),
+                }
+                transfers.append(transfer6)
+
+                # Для завершенных доставок добавляем получение
+                if status in ["Получено", "Готов к выдаче"]:
+                    transfer7 = {
+                        "parcel_id": parcel_id,
+                        "shipping_point_id": final_pvz["id"],
+                        "destination_point_id": final_pvz["id"],
+                        "assigned_status": "Получено",
+                        "created_date": base_date - timedelta(days=2),
+                    }
+                    transfers.append(transfer7)
+
+                # Для незавершенных доставок обрезаем маршрут в зависимости от статуса
+                if status == "В обработке":
+                    # Оставляем только первую перевозку
+                    transfers = [t for t in transfers if t["parcel_id"] != parcel_id]
+                    transfers.append(transfer1)
+                    
+                elif status == "На складе":
+                    # Оставляем до прибытия на первый склад
+                    transfers = [t for t in transfers if t["parcel_id"] != parcel_id]
+                    transfers.extend([transfer1, transfer2])
+                    
+                elif status == "В пути":
+                    # Определяем, на каком этапе "В пути" находится посылка
+                    # Случайно выбираем между путем на склад 2 и путем на ПВЗ
+                    if random.choice([True, False]):
+                        # В пути на склад 2
+                        transfers = [t for t in transfers if t["parcel_id"] != parcel_id]
+                        transfers.extend([transfer1, transfer2, transfer3])
+                    else:
+                        # В пути на ПВЗ
+                        transfers = [t for t in transfers if t["parcel_id"] != parcel_id]
+                        transfers.extend([transfer1, transfer2, transfer3, transfer4, transfer5])
+
+            print(f"Сгенерировано {len(transfers)} перевозок для {len(parcels)} посылок")
+            return transfers
