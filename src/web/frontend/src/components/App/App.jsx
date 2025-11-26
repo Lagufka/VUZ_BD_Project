@@ -4,6 +4,7 @@ import HomePage from "../Pages/HomePage/HomePage";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import ProductPage from "../Pages/ProductPage/ProductPage"
 import AuthPage from "../Pages/AuthPage/AuthPage";
+import UserRegisterPage from "../Pages/UserRegistePage/UserRegisterPage";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/profile/:id" element={<ProfilePage/>} />
             <Route path="/auth" element={<AuthPage/>} />
             <Route path="/product/:id" element={<ProductPage/>} />
+            <Route path="/register" element={<UserRegisterPage/>} />
           </Routes>
         </main>
       </div>
