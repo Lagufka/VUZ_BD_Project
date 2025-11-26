@@ -1,4 +1,8 @@
+import { useRef } from "react";
+
 function PhoneInput({ value, onChange, error, disabled }) {
+  const previousLength = useRef(0);
+
   const formatPhoneNumber = (inputValue) => {
     const numbers = inputValue.replace(/\D/g, "");
     let formattedValue = "+7 ";
@@ -20,8 +24,18 @@ function PhoneInput({ value, onChange, error, disabled }) {
   };
 
   const handlePhoneChange = (e) => {
-    const formattedValue = formatPhoneNumber(e.target.value);
-    onChange("phone", formattedValue);
+    const value = e.target.value;
+    const curentLength = value.length;
+
+    const isDeleting = curentLength < previousLength.current.length;
+
+    console.log(isDeleting);
+
+    if (isDeleting) {
+      onChange("phone", value);
+    } else {
+      onChange("phone", formatPhoneNumber(value));
+    }
   };
 
   const handlePhoneFocus = (e) => {
