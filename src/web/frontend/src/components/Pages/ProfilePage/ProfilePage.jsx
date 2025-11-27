@@ -101,8 +101,7 @@ function ProfilePage() {
             </div>
           </div>
 
-          {/* Текущие доставки */}
-          <div className="deliveries-section">
+          {/* <div className="deliveries-section">
             <h2 className="section-title">Текущие доставки</h2>
             {currentDeliveries.length > 0 ? (
               <div className="deliveries-list">
@@ -158,7 +157,6 @@ function ProfilePage() {
             )}
           </div>
 
-          {/* История заказов */}
           <div className="order-history-section">
             <h2 className="section-title">История заказов</h2>
             {orderHistory.length > 0 ? (
@@ -216,7 +214,9 @@ function ProfilePage() {
                 <p>История заказов пуста</p>
               </div>
             )}
-          </div>
+          </div> */}
+          <a href="/"></a>
+
         </div>
       </div>
     </div>

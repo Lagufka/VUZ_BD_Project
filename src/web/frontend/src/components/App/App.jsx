@@ -5,6 +5,7 @@ import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import ProductPage from "../Pages/ProductPage/ProductPage"
 import AuthPage from "../Pages/AuthPage/AuthPage";
 import UserRegisterPage from "../Pages/UserRegistePage/UserRegisterPage";
+import OrdersPage from "../Pages/OrderPage/OrdersPage";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route path="/profile/:id" element={<ProfilePage/>} />
+            <Route path="/profile/:id/orders" element={<OrdersPage/>} />
             <Route path="/auth" element={<AuthPage/>} />
             <Route path="/product/:id" element={<ProductPage/>} />
             <Route path="/register" element={<UserRegisterPage/>} />

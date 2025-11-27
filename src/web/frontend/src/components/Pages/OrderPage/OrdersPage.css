@@ -1,0 +1,183 @@
+.orders-page {
+  margin-top: 75px;
+  padding: 2rem 0;
+}
+
+.orders-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 1rem;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  transition: all 0.3s ease;
+}
+
+.tab-button:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.tab-button.active {
+  background: linear-gradient(135deg, #667eea 0%, #55a24b 100%);
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.order-card {
+  background: rgb(239, 239, 239);
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.15s;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.order-card:hover {
+  transform: translateY(-5px);
+  border-color: #667eea;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-id {
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.в-пути {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status.ожидает-отправки {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status.доставлен {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.order-product {
+  margin-bottom: 1rem;
+}
+
+.product-name {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.delivery-price {
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.delivery-price strong {
+  color: #55a24b;
+  font-size: 1.1rem;
+}
+
+.delivery-history h5 {
+  margin-bottom: 0.75rem;
+  color: #333;
+  font-size: 1rem;
+}
+
+.history-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.history-item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-date {
+  color: #667eea;
+  font-weight: 600;
+  min-width: 140px;
+  font-size: 0.85rem;
+}
+
+.history-event {
+  color: #333;
+  font-weight: 500;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .orders-page {
+    margin-top: 140px;
+    padding: 1rem;
+  }
+
+  .orders-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .history-item {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .history-date {
+    min-width: auto;
+  }
+}
