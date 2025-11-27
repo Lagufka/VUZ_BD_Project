@@ -1,30 +1,32 @@
-import React, { useState } from 'react';
-import './UserRegisterPage.css';
+import React, { useState } from "react";
+import "./UserRegisterPage.css";
+import SubmitButton from "../AuthPage/SubmitButton";
+import PhoneInput from "../AuthPage/PhoneInput";
+import PasswordInput from "../AuthPage/PasswordInput";
 
 const UserRegisterPage = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    fullName: "",
+    phone: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+  const handleInputChange = (name, value) => {
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Очищаем ошибку при изменении поля
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -34,37 +36,42 @@ const UserRegisterPage = () => {
 
     // Валидация ФИО
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'ФИО обязательно';
-    } else if (formData.fullName.trim().split(' ').length < 2) {
-      newErrors.fullName = 'Введите фамилию, имя и отчество';
+      newErrors.fullName = "ФИО обязательно";
+    } else if (formData.fullName.trim().split(" ").length < 2) {
+      newErrors.fullName = "Введите фамилию, имя и отчество";
     }
 
     // Валидация телефона
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Номер телефона обязателен';
-    } else if (!/^(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/.test(formData.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Введите корректный номер телефона';
+      newErrors.phone = "Номер телефона обязателен";
+    } else if (
+      !(/^(\+7|8)?[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/).test(
+        formData.phone.replace(/\s/g, "")
+      )
+    ) {
+      newErrors.phone = "Введите корректный номер телефона";
     }
 
     // Валидация email (не обязателен, но если указан - проверяем формат)
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Введите корректный email адрес';
+      newErrors.email = "Введите корректный email адрес";
     }
 
     // Валидация пароля
     if (!formData.password) {
-      newErrors.password = 'Пароль обязателен';
+      newErrors.password = "Пароль обязателен";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Пароль должен содержать минимум 6 символов';
-    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
-      newErrors.password = 'Пароль должен содержать буквы в верхнем и нижнем регистре и цифры';
+      newErrors.password = "Пароль должен содержать минимум 6 символов";
     }
+    // else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
+    //       newErrors.password = 'Пароль должен содержать буквы в верхнем и нижнем регистре и цифры';
+    //     }
 
     // Валидация подтверждения пароля
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Подтвердите пароль';
+      newErrors.confirmPassword = "Подтвердите пароль";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Пароли не совпадают';
+      newErrors.confirmPassword = "Пароли не совпадают";
     }
 
     return newErrors;
@@ -72,7 +79,7 @@ const UserRegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const formErrors = validateForm();
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors);
@@ -83,87 +90,52 @@ const UserRegisterPage = () => {
 
     try {
       // Имитация запроса к API
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       // Здесь будет реальный запрос к API
-      console.log('Данные для регистрации:', {
+      console.log("Данные для регистрации:", {
         fullName: formData.fullName,
         phone: formData.phone,
         email: formData.email || null,
-        password: formData.password
+        password: formData.password,
       });
 
       // Успешная регистрация
-      alert('Регистрация прошла успешно!');
+      alert("Регистрация прошла успешно!");
       // Здесь можно добавить редирект на страницу входа или автоматический вход
-      
     } catch (error) {
-      console.error('Ошибка регистрации:', error);
-      setErrors({ submit: 'Ошибка регистрации. Попробуйте позже.' });
+      console.error("Ошибка регистрации:", error);
+      setErrors({ submit: "Ошибка регистрации. Попробуйте позже." });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handlePhoneFocus = (e) => {
-    if (!e.target.value) {
-      e.target.value = '+7 ';
-    }
-  };
+  // const getPasswordStrength = (password) => {
+  //   if (!password) return { strength: 0, text: '', color: '' };
 
-  const formatPhoneNumber = (value) => {
-    const numbers = value.replace(/\D/g, '');
-    let formattedValue = '+7 ';
-    
-    if (numbers.length > 1) {
-      formattedValue += '(' + numbers.substring(1, 4);
-    }
-    if (numbers.length >= 4) {
-      formattedValue += ') ' + numbers.substring(4, 7);
-    }
-    if (numbers.length >= 7) {
-      formattedValue += '-' + numbers.substring(7, 9);
-    }
-    if (numbers.length >= 9) {
-      formattedValue += '-' + numbers.substring(9, 11);
-    }
-    
-    return formattedValue;
-  };
+  //   let strength = 0;
+  //   if (password.length >= 6) strength += 1;
+  //   if (/[a-z]/.test(password)) strength += 1;
+  //   if (/[A-Z]/.test(password)) strength += 1;
+  //   if (/\d/.test(password)) strength += 1;
+  //   if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 1;
 
-  const handlePhoneChange = (e) => {
-    const formattedValue = formatPhoneNumber(e.target.value);
-    setFormData(prev => ({
-      ...prev,
-      phone: formattedValue
-    }));
-  };
+  //   const strengthMap = {
+  //     1: { text: 'Слабый', color: '#e74c3c' },
+  //     2: { text: 'Слабый', color: '#e74c3c' },
+  //     3: { text: 'Средний', color: '#f39c12' },
+  //     4: { text: 'Хороший', color: '#3498db' },
+  //     5: { text: 'Надежный', color: '#27ae60' }
+  //   };
 
-  const getPasswordStrength = (password) => {
-    if (!password) return { strength: 0, text: '', color: '' };
-    
-    let strength = 0;
-    if (password.length >= 6) strength += 1;
-    if (/[a-z]/.test(password)) strength += 1;
-    if (/[A-Z]/.test(password)) strength += 1;
-    if (/\d/.test(password)) strength += 1;
-    if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 1;
+  //   return {
+  //     strength: (strength / 5) * 100,
+  //     ...strengthMap[strength] || { text: 'Очень слабый', color: '#e74c3c' }
+  //   };
+  // };
 
-    const strengthMap = {
-      1: { text: 'Слабый', color: '#e74c3c' },
-      2: { text: 'Слабый', color: '#e74c3c' },
-      3: { text: 'Средний', color: '#f39c12' },
-      4: { text: 'Хороший', color: '#3498db' },
-      5: { text: 'Надежный', color: '#27ae60' }
-    };
-
-    return {
-      strength: (strength / 5) * 100,
-      ...strengthMap[strength] || { text: 'Очень слабый', color: '#e74c3c' }
-    };
-  };
-
-  const passwordStrength = getPasswordStrength(formData.password);
+  // const passwordStrength = getPasswordStrength(formData.password);
 
   return (
     <div className="register-page">
@@ -184,31 +156,22 @@ const UserRegisterPage = () => {
                 id="fullName"
                 name="fullName"
                 value={formData.fullName}
-                onChange={handleInputChange}
-                className={`form-input ${errors.fullName ? 'error' : ''}`}
+                onChange={(e) => handleInputChange("fullName", e.target.value)}
+                className={`form-input ${errors.fullName ? "error" : ""}`}
                 placeholder="Иванов Иван Иванович"
                 disabled={isLoading}
               />
-              {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+              {errors.fullName && (
+                <span className="error-message">{errors.fullName}</span>
+              )}
             </div>
 
-            <div className="form-group">
-              <label htmlFor="phone" className="form-label">
-                Номер телефона *
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handlePhoneChange}
-                onFocus={handlePhoneFocus}
-                className={`form-input ${errors.phone ? 'error' : ''}`}
-                placeholder="+7 (999) 123-45-67"
-                disabled={isLoading}
-              />
-              {errors.phone && <span className="error-message">{errors.phone}</span>}
-            </div>
+            <PhoneInput
+              value={formData.phone}
+              onChange={handleInputChange}
+              error={errors.phone}
+              disabled={isLoading}
+            />
 
             <div className="form-group">
               <label htmlFor="email" className="form-label">
@@ -219,12 +182,14 @@ const UserRegisterPage = () => {
                 id="email"
                 name="email"
                 value={formData.email}
-                onChange={handleInputChange}
-                className={`form-input ${errors.email ? 'error' : ''}`}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                className={`form-input ${errors.email ? "error" : ""}`}
                 placeholder="example@mail.ru"
                 disabled={isLoading}
               />
-              {errors.email && <span className="error-message">{errors.email}</span>}
+              {errors.email && (
+                <span className="error-message">{errors.email}</span>
+              )}
               <div className="field-hint">Необязательное поле</div>
             </div>
 
@@ -237,12 +202,12 @@ const UserRegisterPage = () => {
                 id="password"
                 name="password"
                 value={formData.password}
-                onChange={handleInputChange}
-                className={`form-input ${errors.password ? 'error' : ''}`}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                className={`form-input ${errors.password ? "error" : ""}`}
                 placeholder="Введите пароль"
                 disabled={isLoading}
               />
-              {formData.password && (
+              {/* {formData.password && (
                 <div className="password-strength">
                   <div className="strength-bar">
                     <div 
@@ -257,10 +222,12 @@ const UserRegisterPage = () => {
                     {passwordStrength.text}
                   </span>
                 </div>
+              )} */}
+              {errors.password && (
+                <span className="error-message">{errors.password}</span>
               )}
-              {errors.password && <span className="error-message">{errors.password}</span>}
               <div className="field-hint">
-                Минимум 6 символов, буквы в верхнем и нижнем регистре, цифры
+                {/* Минимум 6 символов, буквы в верхнем и нижнем регистре, цифры */}
               </div>
             </div>
 
@@ -273,34 +240,28 @@ const UserRegisterPage = () => {
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
-                onChange={handleInputChange}
-                className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
+                onChange={(e) =>
+                  handleInputChange("confirmPassword", e.target.value)
+                }
+                className={`form-input ${
+                  errors.confirmPassword ? "error" : ""
+                }`}
                 placeholder="Повторите пароль"
                 disabled={isLoading}
               />
-              {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+              {errors.confirmPassword && (
+                <span className="error-message">{errors.confirmPassword}</span>
+              )}
             </div>
 
             {errors.submit && (
-              <div className="submit-error">
-                {errors.submit}
-              </div>
+              <div className="submit-error">{errors.submit}</div>
             )}
 
-            <button
-              type="submit"
-              className={`register-button ${isLoading ? 'loading' : ''}`}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <div className="spinner"></div>
-                  Регистрация...
-                </>
-              ) : (
-                'Зарегистрироваться'
-              )}
-            </button>
+            <SubmitButton
+              isLoading={isLoading}
+              buttonText="Зарегистрироваться"
+            />
           </form>
 
           <div className="register-footer">

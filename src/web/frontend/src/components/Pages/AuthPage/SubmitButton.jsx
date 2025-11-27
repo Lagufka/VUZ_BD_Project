@@ -1,4 +1,5 @@
-function SubmitButton({ isLoading }) {
+// SubmitButton.js
+function SubmitButton({ isLoading, buttonText = "Войти" }) {
   return (
     <button
       type="submit"
@@ -8,10 +9,10 @@ function SubmitButton({ isLoading }) {
       {isLoading ? (
         <>
           <div className="spinner"></div>
-          Вход...
+          {buttonText.replace('ся', 'ется')}...
         </>
       ) : (
-        "Войти"
+        buttonText
       )}
     </button>
   );
