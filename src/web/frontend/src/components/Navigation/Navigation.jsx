@@ -14,7 +14,7 @@ function Navigation({ profileId }) {
           <Link to={`/profile/${profileId}`}>
             <div className="link">Профиль</div>
           </Link>
-          <Link to="auth">
+          <Link to="/user_auth">
             <div className="link">Войти</div>
           </Link>
         </nav>

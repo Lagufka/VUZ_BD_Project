@@ -1,13 +1,13 @@
 import usePageTitle from "../../Hooks/UsePageTitle";
 import { useState } from "react";
-import LoginForm from "./LoginForm";
-import LoginHeader from "./LoginHeader";
-import LoginFooter from "./LoginFooter";
-import "./AuthPage.css";
+import LoginForm from "./AuthComponents/LoginForm";
+import LoginHeader from "./AuthComponents/LoginHeader";
+import LoginFooter from "./AuthComponents/LoginFooter";
+import "./SellerAuthPage.css";
 
 
-function AuthPage() {
-  usePageTitle("Авторизация");
+function SellerAuthPage() {
+  usePageTitle("Авторизация продавца");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,12 +30,12 @@ function AuthPage() {
   return (
     <div className="login-page">
       <div className="login-container">
-        <LoginHeader />
+        <LoginHeader headerText={"Вход в акаунт продавца"}/>
         <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
-        <LoginFooter />
+        <a href="seller_profile/2">Профиль продавца</a>
       </div>
     </div>
   );
 }
 
-export default AuthPage;
+export default SellerAuthPage;

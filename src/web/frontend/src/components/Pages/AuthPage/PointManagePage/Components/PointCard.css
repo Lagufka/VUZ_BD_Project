@@ -1,0 +1,112 @@
+.point-card {
+  background: rgb(239, 239, 239);
+  border-radius: 15px;
+  padding: 1.5rem;
+  transition: all 0.15s;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+  position: relative;
+  border: 2px solid transparent;
+}
+
+.point-card:hover {
+  transform: translateY(-5px);
+  border-color: #667eea;
+}
+
+.point-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.point-type {
+  background: linear-gradient(135deg, #667eea 0%, #55a24b 100%);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.delete-button {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  padding: 0 !important;
+  min-width: auto !important;
+}
+
+.delete-button:hover {
+  background: #c0392b;
+  transform: scale(1.1);
+}
+
+.delete-button:active {
+  transform: scale(0.9);
+}
+
+.point-address,
+.point-phone {
+  margin-bottom: 1rem;
+}
+
+.point-address h3,
+.point-phone h3 {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.point-address p,
+.point-phone p {
+  color: #666;
+  line-height: 1.5;
+  margin: 0;
+  word-break: break-word;
+}
+
+.point-id {
+  font-size: 0.8rem;
+  color: #999;
+  text-align: right;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+  .point-card {
+    padding: 1rem;
+  }
+
+  .point-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .delete-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .point-type {
+    font-size: 0.8rem;
+  }
+}

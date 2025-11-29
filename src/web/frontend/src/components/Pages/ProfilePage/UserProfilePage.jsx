@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import usePageTitle from "../../Hooks/UsePageTitle";
-import "./ProfilePage.css"
+import "./UserProfilePage.css"
 
-function ProfilePage() {
+function UserProfilePage() {
   usePageTitle("Профиль");
   const { id } = useParams();
 
@@ -218,9 +218,11 @@ function ProfilePage() {
           <a href="/"></a>
 
         </div>
+
+        <a href="/profile/4/orders">Ваши заказы</a>
       </div>
     </div>
   );
 }
 
-export default ProfilePage;
+export default UserProfilePage;

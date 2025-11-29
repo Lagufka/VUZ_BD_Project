@@ -1,24 +1,23 @@
-from flask import Flask, render_template
+# app.py
+from flask import Flask, jsonify, request
+from flask_cors import CORS  # для обработки CORS
 
 app = Flask(__name__)
+CORS(app)  # Разрешаем запросы с других доменов
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    data = {
+        'message': 'Hello from Flask!',
+        'status': 'success'
+    }
+    return jsonify(data)
 
-@app.route("/auth")
-def auth():
-    return render_template("auth.html")
+@app.route('/api/users', methods=['POST'])
+def create_user():
+    data = request.get_json()
+    # Обработка данных
+    return jsonify({'message': 'User created', 'data': data})
 
-@app.route("/product")
-def product():
-    return render_template("product.html")
-
-@app.route("/profile")
-def profile():
-    return render_template("profile.html")
-
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

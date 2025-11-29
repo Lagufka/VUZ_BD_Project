@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./UserRegisterPage.css";
-import SubmitButton from "../AuthPage/SubmitButton";
-import PhoneInput from "../AuthPage/PhoneInput";
-import PasswordInput from "../AuthPage/PasswordInput";
+import SubmitButton from "../../AuthPage/AuthComponents/SubmitButton";
+import PhoneInput from "../../AuthPage/AuthComponents/PhoneInput";
+import PasswordInput from "../../AuthPage/AuthComponents/PasswordInput";
 
 const UserRegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -142,7 +142,7 @@ const UserRegisterPage = () => {
       <div className="register-background">
         <div className="register-container">
           <div className="register-header">
-            <h1 className="register-title">Регистрация</h1>
+            <h1 className="register-title">Регистрация пользователя</h1>
             <p className="register-subtitle">Создайте новый аккаунт</p>
           </div>
 
@@ -266,7 +266,7 @@ const UserRegisterPage = () => {
 
           <div className="register-footer">
             <p className="login-link">
-              Уже есть аккаунт? <a href="/login">Войти</a>
+              Уже есть аккаунт? <a href="/auth">Войти</a>
             </p>
           </div>
         </div>

@@ -2,6 +2,8 @@ import usePageTitle from "../../Hooks/UsePageTitle";
 import FilterPanel from "./FilterPanel/FilterPanel";
 import ProductCard from "./ProductCard/ProductCard";
 import ProductGrid from "./ProductGrid/ProductGrid";
+import Footer from "../../Navigation/Footer";
+import "./HomePage.css";
 
 function HomePage() {
   usePageTitle("Главная страница");
@@ -17,16 +19,19 @@ function HomePage() {
       key={`product ${i}`}
       id={i}
       name={
-        "123456789qwer tyuioasdfghj klzxcvbnm,12345678iuqwo uetyqieyncqoiwue hryiowrqeugb fioungfheoq wiuchbuqweoi uhncfqiwe ouhcfqwboiecfnhuh"
+        "Кросовки найк адидас"
       }
     />
   ));
 
   return (
-    <div id="catalog-grid">
+    <div >
+      <div id="catalog-grid">
       <FilterPanel filters={filters} />
 
       <ProductGrid productCards={productCards} />
+      </div>
+      <Footer />
     </div>
   );
 }

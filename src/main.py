@@ -71,16 +71,19 @@ def generateTestData():
     #     returnings = ddb.database_manager.execute_query(query, params)
     #     print(returnings)
 
-    query, params = ddb.query_repository.select("point")
-    points = ddb.database_manager.execute_query(query, params)
-    query, params = ddb.query_repository.select("parcel")
-    parcels = ddb.database_manager.execute_query(query, params)
+    # query, params = ddb.query_repository.select("point")
+    # points = ddb.database_manager.execute_query(query, params)
+    # query, params = ddb.query_repository.select("parcel")
+    # parcels = ddb.database_manager.execute_query(query, params)
     
-    transfers = fake_data.generateFakeTransfers(points, parcels)
-    for transfer in transfers:
-        query, params = ddb.query_repository.insert("transfer", transfer, ["id"])
-        returnings = ddb.database_manager.execute_query(query, params)
-        print(returnings)
+    # transfers = fake_data.generateFakeTransfers(points, parcels)
+    # for transfer in transfers:
+    #     query, params = ddb.query_repository.insert("transfer", transfer, ["id"])
+    #     returnings = ddb.database_manager.execute_query(query, params)
+    #     print(returnings)
+
+
+
 
 generateTestData()
 ddb.database_manager.close()
