@@ -1,10 +1,10 @@
 import os
 from dataclasses import dataclass
 from typing import Callable
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 from psycopg.rows import dict_row
 
-load_dotenv("dbenv.env")
+load_dotenv(find_dotenv("dbenv.env"))
 
 @dataclass
 class DatabaseConfig:

@@ -1,11 +1,10 @@
 import logging
 from typing import List, Dict, Any, Optional, Tuple
-from datetime import date, datetime
 from decimal import Decimal
 
 logger = logging.getLogger(__name__)
 
-class DatabaseService:
+class DatabaseCRUD:
     def __init__(self, database_manager):
         """Инициализация сервиса с менеджером базы данных"""
         self.db = database_manager
