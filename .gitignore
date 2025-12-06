@@ -4,3 +4,4 @@ src/test.py
 backend/app/static/*
 node_modules/lodash/*
 backend/static/*
+node_modules/.package-lock.json
