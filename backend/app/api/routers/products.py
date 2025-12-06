@@ -57,7 +57,7 @@ async def get_products_by_seller(
 @router.get("/search/")
 async def search_products(
     db_service: DbServiceDep,
-    q: str = Query(..., min_length=1),
+    q: str = Query(..., min_length=0),
     min_price: Optional[Decimal] = Query(None, ge=0),
     max_price: Optional[Decimal] = Query(None, ge=0),
     min_weight: Optional[Decimal] = Query(None, ge=0),

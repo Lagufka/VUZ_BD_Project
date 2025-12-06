@@ -1,6 +1,6 @@
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from api.routers import products, buyers, sellers, parcels, points
+from api.routers import products, buyers, sellers, parcels, points, auth
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,7 +15,7 @@ app = FastAPI(
 # Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,6 +27,7 @@ app.include_router(buyers.router)
 app.include_router(sellers.router)
 app.include_router(parcels.router)
 app.include_router(points.router)
+app.include_router(auth.router, prefix="/api/auth", tags=["authentication"])
 
 
 ### Подгрузка статики ###

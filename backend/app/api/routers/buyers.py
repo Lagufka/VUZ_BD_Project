@@ -12,14 +12,7 @@ class BuyerRegistration(BaseModel):
     phone_number: str
     email: Optional[EmailStr] = None
     patronymic: Optional[str] = None
-    
-    @field_validator('phone_number')
-    def validate_phone(cls, v):
-        # Простая валидация телефона (можно настроить под ваши требования)
-        phone_regex = r'^\+?[1-9]\d{1,14}$'
-        if not re.match(phone_regex, v):
-            raise ValueError('Некорректный формат телефона')
-        return v
+
 
 @router.post("/register")
 async def register_buyer(
@@ -27,6 +20,7 @@ async def register_buyer(
     db_service: DbServiceDep
 ):
     """Регистрация нового покупателя"""
+    print("Начали регистрацию")
     success, buyer_id, message = db_service.register_buyer(
         first_name=buyer_data.first_name,
         second_name=buyer_data.second_name,
@@ -34,6 +28,7 @@ async def register_buyer(
         email=buyer_data.email,
         patronymic=buyer_data.patronymic
     )
+    print("Закончили регистрацию")
     
     if not success:
         raise HTTPException(status_code=400, detail=message)
