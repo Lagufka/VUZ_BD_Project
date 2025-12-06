@@ -592,25 +592,7 @@ class DatabaseCRUD:
         """
         try:
             # Проверяем, используется ли пункт в посылках
-            parcels_query = """
-                SELECT COUNT(*) FROM parcel 
-                WHERE destination_point_id = %s
-            """
-            parcels_result = self.db.execute_query(parcels_query, (point_id,))
-            parcels_count = parcels_result[0]["count"] if parcels_result else 0
 
-            # Проверяем, используется ли пункт в трансферах
-            transfers_query = """
-                SELECT COUNT(*) FROM transfer 
-                WHERE shipping_point_id = %s OR destination_point_id = %s
-            """
-            transfers_result = self.db.execute_query(
-                transfers_query, (point_id, point_id)
-            )
-            transfers_count = transfers_result[0]["count"] if transfers_result else 0
-
-            if parcels_count > 0 or transfers_count > 0:
-                return False, "Пункт используется в посылках или трансферах"
 
             query = "DELETE FROM point WHERE id = %s"
             rows_affected = self.db.execute_update(query, (point_id,))

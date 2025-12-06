@@ -134,3 +134,489 @@
     font-size: 0.9rem;
   }
 }
+/* PointRegisterPage.css - Специфичные стили для страницы регистрации */
+
+.delivery-registration-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.delivery-registration-page .page-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.delivery-registration-page .page-subtitle {
+  color: #718096;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+/* Информационный блок */
+.delivery-registration-page .info-section {
+  margin-bottom: 30px;
+}
+
+.delivery-registration-page .info-card {
+  background: linear-gradient(135deg, #4299e1, #3182ce);
+  color: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+}
+
+.delivery-registration-page .info-card h3 {
+  margin-top: 0;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delivery-registration-page .info-list {
+  padding-left: 20px;
+  margin: 15px 0 0 0;
+}
+
+.delivery-registration-page .info-list li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+/* Форма */
+.delivery-registration-page .registration-form {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.delivery-registration-page .form-group {
+  margin-bottom: 25px;
+}
+
+.delivery-registration-page .form-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.delivery-registration-page .label-icon {
+  font-size: 18px;
+}
+
+/* Поле ввода адреса - используем уникальный класс */
+.delivery-registration-page .form-input-textarea {
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: inherit;
+  transition: all 0.3s;
+  resize: vertical;
+  min-height: 100px;
+}
+
+.delivery-registration-page .form-input-textarea:focus {
+  outline: none;
+  border-color: #3182ce;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+}
+
+.delivery-registration-page .form-input-textarea.error {
+  border-color: #fc8181;
+  background-color: #fff5f5;
+}
+
+/* Подсказки под полями */
+.delivery-registration-page .input-hint {
+  margin-top: 10px;
+  color: #718096;
+  font-size: 14px;
+}
+
+.delivery-registration-page .hint-icon {
+  margin-right: 5px;
+}
+
+.delivery-registration-page .examples-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+}
+
+.delivery-registration-page .example-item {
+  margin-bottom: 5px;
+}
+
+.delivery-registration-page .example-btn {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #4a5568;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.delivery-registration-page .example-btn:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+/* Выбор типа точки */
+.delivery-registration-page .type-selection {
+  margin-top: 10px;
+}
+
+.delivery-registration-page .type-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.delivery-registration-page .type-option {
+  display: block;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: white;
+}
+
+.delivery-registration-page .type-option:hover {
+  border-color: #cbd5e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-registration-page .type-option.selected {
+  border-color: #3182ce;
+  background-color: #ebf8ff;
+}
+
+.delivery-registration-page .type-radio {
+  display: none;
+}
+
+.delivery-registration-page .option-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.delivery-registration-page .option-icon {
+  font-size: 32px;
+}
+
+.delivery-registration-page .option-text {
+  flex: 1;
+}
+
+.delivery-registration-page .option-text strong {
+  display: block;
+  color: #2d3748;
+  margin-bottom: 5px;
+}
+
+.delivery-registration-page .option-description {
+  color: #718096;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Поле телефона - специфичный враппер */
+.delivery-registration-page .phone-input-wrapper {
+  margin-top: 5px;
+}
+
+/* Обеспечиваем, что стили PhoneInput не переопределяются */
+.delivery-registration-page .phone-input-wrapper .form-input {
+  width: 100% !important;
+  padding: 12px 15px !important;
+  border: 2px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+}
+
+.delivery-registration-page .phone-input-wrapper .form-input:focus {
+  border-color: #3182ce !important;
+  box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1) !important;
+  outline: none !important;
+}
+
+.delivery-registration-page .phone-input-wrapper .form-input.error {
+  border-color: #fc8181 !important;
+  background-color: #fff5f5 !important;
+}
+
+/* Сообщения */
+.delivery-registration-page .success-message {
+  background: #f0fff4;
+  border: 2px solid #9ae6b4;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 25px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.delivery-registration-page .success-icon {
+  font-size: 24px;
+  color: #38a169;
+}
+
+.delivery-registration-page .success-content {
+  flex: 1;
+}
+
+.delivery-registration-page .success-line {
+  margin: 5px 0;
+  color: #22543d;
+  line-height: 1.5;
+}
+
+.delivery-registration-page .success-note {
+  color: #718096;
+  font-size: 14px;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.delivery-registration-page .submit-error {
+  background: #fff5f5;
+  border: 2px solid #fc8181;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 25px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.delivery-registration-page .error-icon {
+  font-size: 24px;
+  color: #e53e3e;
+}
+
+.delivery-registration-page .error-content {
+  flex: 1;
+}
+
+.delivery-registration-page .error-content strong {
+  color: #742a2a;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.delivery-registration-page .error-content p {
+  color: #742a2a;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Кнопки - специфичные классы */
+.delivery-registration-page .form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+}
+
+.delivery-registration-page .submit-button,
+.delivery-registration-page .cancel-button,
+.delivery-registration-page .clear-button {
+  flex: 1;
+  min-width: 150px;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.delivery-registration-page .submit-button {
+  background: linear-gradient(135deg, #38a169, #2f855a);
+  color: white;
+}
+
+.delivery-registration-page .submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 161, 105, 0.3);
+}
+
+.delivery-registration-page .submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.delivery-registration-page .cancel-button {
+  background: #e2e8f0;
+  color: #4a5568;
+}
+
+.delivery-registration-page .cancel-button:hover:not(:disabled) {
+  background: #cbd5e0;
+  transform: translateY(-2px);
+}
+
+.delivery-registration-page .clear-button {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+.delivery-registration-page .clear-button:hover:not(:disabled) {
+  background: #feb2b2;
+  transform: translateY(-2px);
+}
+
+/* Спиннер кнопки */
+.delivery-registration-page .button-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Подсказка формы */
+.delivery-registration-page .form-hint {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #e2e8f0;
+}
+
+.delivery-registration-page .hint-card {
+  background: #faf5ff;
+  border: 1px solid #d6bcfa;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.delivery-registration-page .hint-icon-large {
+  font-size: 32px;
+  color: #805ad5;
+}
+
+.delivery-registration-page .hint-content {
+  flex: 1;
+}
+
+.delivery-registration-page .hint-content strong {
+  color: #553c9a;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.delivery-registration-page .hint-content ul {
+  padding-left: 20px;
+  margin: 0;
+  color: #718096;
+}
+
+.delivery-registration-page .hint-content li {
+  margin-bottom: 5px;
+  line-height: 1.5;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Сообщения об ошибках - специфичные */
+.delivery-registration-page .error-message {
+  display: block;
+  color: #e53e3e;
+  font-size: 14px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .delivery-registration-page {
+    padding: 15px;
+  }
+  
+  .delivery-registration-page .registration-form {
+    padding: 20px;
+  }
+  
+  .delivery-registration-page .type-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .delivery-registration-page .form-actions {
+    flex-direction: column;
+  }
+  
+  .delivery-registration-page .submit-button,
+  .delivery-registration-page .cancel-button,
+  .delivery-registration-page .clear-button {
+    width: 100%;
+  }
+  
+  .delivery-registration-page .option-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .delivery-registration-page .option-icon {
+    font-size: 24px;
+  }
+}
+
+/* Улучшение доступности */
+.delivery-registration-page .form-input-textarea:disabled,
+.delivery-registration-page .type-option:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.delivery-registration-page .type-option:disabled:hover {
+  transform: none;
+  border-color: #e2e8f0;
+  box-shadow: none;
+}

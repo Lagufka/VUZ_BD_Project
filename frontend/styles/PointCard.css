@@ -1,112 +1,425 @@
+/* PointCard.css */
 .point-card {
-  background: rgb(239, 239, 239);
-  border-radius: 15px;
-  padding: 1.5rem;
-  transition: all 0.15s;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
   position: relative;
-  border: 2px solid transparent;
+  overflow: hidden;
 }
 
 .point-card:hover {
   transform: translateY(-5px);
-  border-color: #667eea;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  border-color: #cbd5e0;
 }
 
-.point-header {
+.point-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3182ce, #805ad5);
+}
+
+/* Заголовок карточки */
+.point-card-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f7fafc;
 }
 
 .point-type {
-  background: linear-gradient(135deg, #667eea 0%, #55a24b 100%);
-  color: white;
-  padding: 0.4rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.type-icon {
+  font-size: 24px;
+}
+
+.type-text {
+  font-weight: 600;
+  color: #2d3748;
+  font-size: 18px;
+}
+
+.point-status {
+  padding: 6px 12px;
+  background: #c6f6d5;
+  color: #22543d;
   border-radius: 20px;
-  font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 12px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-.delete-button {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 1.2rem;
+.point-status.active {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.point-status.inactive {
+  background: #fed7d7;
+  color: #742a2a;
+}
+
+/* ID точки */
+.point-id {
+  background: #f7fafc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.id-label {
+  color: #718096;
+  font-size: 14px;
+}
+
+.id-value {
+  font-family: 'Courier New', monospace;
   font-weight: bold;
+  color: #4a5568;
+  background: #e2e8f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Адрес */
+.point-address {
+  margin-bottom: 20px;
+}
+
+.address-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.address-icon {
+  font-size: 20px;
+  color: #3182ce;
+}
+
+.address-header h4 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 16px;
+}
+
+.address-content {
+  background: #f8fafc;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #3182ce;
+  line-height: 1.6;
+  color: #4a5568;
+}
+
+.address-city {
+  display: block;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 5px;
+}
+
+.address-street {
+  display: block;
+  color: #718096;
+}
+
+/* Контактная информация */
+.point-contact {
+  margin-bottom: 20px;
+}
+
+.contact-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.contact-icon {
+  font-size: 20px;
+  color: #38a169;
+}
+
+.contact-header h4 {
+  margin: 0;
+  color: #2d3748;
+  font-size: 16px;
+}
+
+.contact-content {
+  background: #f0fff4;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.contact-phone {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-label {
+  color: #718096;
+  font-size: 14px;
+  min-width: 80px;
+}
+
+.contact-value {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.phone-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #3182ce;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.phone-link:hover {
+  color: #2c5282;
+  text-decoration: underline;
+}
+
+.phone-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.phone-not-available {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #a0aec0;
+  font-style: italic;
+}
+
+.phone-icon {
+  font-size: 16px;
+}
+
+/* Описание типа точки */
+.point-description {
+  background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+}
+
+.description-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.description-icon {
+  font-size: 16px;
+  color: #667eea;
+  margin-top: 2px;
+}
+
+.description-text {
+  color: #4a5568;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Дополнительная информация */
+.point-info {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-icon {
+  font-size: 16px;
+  color: #d69e2e;
+  min-width: 24px;
+}
+
+.info-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.info-label {
+  color: #718096;
+  font-size: 14px;
+}
+
+.info-value {
+  color: #2d3748;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Кнопки действий */
+.point-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.edit-btn, .delete-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
-  padding: 0 !important;
-  min-width: auto !important;
+  gap: 8px;
+  font-size: 14px;
 }
 
-.delete-button:hover {
-  background: #c0392b;
-  transform: scale(1.1);
+.edit-btn {
+  background: #edf2f7;
+  color: #4a5568;
 }
 
-.delete-button:active {
-  transform: scale(0.9);
+.edit-btn:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
 }
 
-.point-address,
-.point-phone {
-  margin-bottom: 1rem;
+.delete-btn {
+  background: #fed7d7;
+  color: #742a2a;
 }
 
-.point-address h3,
-.point-phone h3 {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-weight: 700;
+.delete-btn:hover:not(.deleting) {
+  background: #feb2b2;
+  transform: translateY(-2px);
 }
 
-.point-address p,
-.point-phone p {
-  color: #666;
-  line-height: 1.5;
-  margin: 0;
-  word-break: break-word;
+.delete-btn.deleting {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-.point-id {
-  font-size: 0.8rem;
-  color: #999;
-  text-align: right;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #ddd;
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #742a2a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Подсказка */
+.point-hint {
+  background: #fffaf0;
+  border: 1px solid #feebc8;
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #dd6b20;
+}
+
+.hint-icon {
+  font-size: 14px;
+}
+
+.hint-text {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Анимация спиннера */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Адаптивность */
 @media (max-width: 480px) {
   .point-card {
-    padding: 1rem;
+    padding: 20px;
   }
-
-  .point-header {
+  
+  .point-card-header {
     flex-direction: column;
-    gap: 0.5rem;
     align-items: flex-start;
+    gap: 10px;
   }
+  
+  .point-actions {
+    flex-direction: column;
+  }
+  
+  .contact-phone {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  .info-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
 
-  .delete-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
+/* Эффект при наведении на кнопки */
+.edit-btn:active, .delete-btn:active {
+  transform: translateY(0);
+}
 
-  .point-type {
-    font-size: 0.8rem;
-  }
+/* Состояние для неактивных точек */
+.point-card.inactive {
+  opacity: 0.7;
+  background: #f7fafc;
+}
+
+.point-card.inactive::before {
+  background: linear-gradient(90deg, #a0aec0, #718096);
 }
