@@ -5,6 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: '../backend/static', // 👈 измените на нужную директорию
+    outDir: '../backend/app/static', // 👈 измените на нужную директорию
   }
 })

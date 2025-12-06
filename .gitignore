@@ -3,3 +3,4 @@ __pycache__
 src/test.py
 backend/app/static/*
 node_modules/lodash/*
+backend/static/*
