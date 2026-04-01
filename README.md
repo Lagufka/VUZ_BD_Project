@@ -6,14 +6,15 @@
 
 **Локальный запуск:**
 ```bash
-# backend
-pip install -r requirements.txt
-uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
-
 # frontend
 cd frontend
 npm install
 npm run build
+
+# backend
+pip install -r requirements.txt
+cd backend/app
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 
